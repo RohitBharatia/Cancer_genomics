@@ -38,12 +38,12 @@ Analysis was done on the University of Bern's HPC cluster.
 The following tools and packages were used: 
 ##### Part 1: Variant calling
 Initial QC:
-- FastQC: - https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-- fastp: - https://github.com/OpenGene/fastp 
-- MultiQC - https://seqera.io/multiqc/ 
+- FastQC: - https://www.bioinformatics.babraham.ac.uk/projects/fastqc/  
+- fastp: - https://github.com/OpenGene/fastp  
+- MultiQC - https://seqera.io/multiqc/  
 
-Read Alignment: bwa-mem2: - https://github.com/bwa-mem2/bwa-mem2
-BAM Processing: MarkDuplicates: - https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard
+Read Alignment: bwa-mem2: - https://github.com/bwa-mem2/bwa-mem2  
+BAM Processing: MarkDuplicates: - https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard  
 Quality Calibration
-- BaseRecalibrator: - https://gatk.broadinstitute.org/hc/en-us/articles/360036898312-BaseRecalibrator
-- ApplyBQSR: - https://gatk.broadinstitute.org/hc/en-us/articles/360037055712-ApplyBQSR
+- BaseRecalibrator: - https://gatk.broadinstitute.org/hc/en-us/articles/360036898312-BaseRecalibrator  
+- ApplyBQSR: - https://gatk.broadinstitute.org/hc/en-us/articles/360037055712-ApplyBQSR  

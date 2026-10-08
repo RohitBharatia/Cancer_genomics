@@ -12,7 +12,9 @@ Rohit Mohan Bharatia: 25-114-455
 ```
 project/
 ├── data/                    # Data
+├── config/                  # Snakemake configs
 ├── scripts/                 # Analysis scripts
+├── envs/                    # Conda environement file
 ├── results/                 # Output results
 │   ├── quality_control/     # Quality Control      
 │   │  ├── fastQC/
@@ -23,6 +25,7 @@ project/
 │   └── quality_calibration/ # Quality calibration
 │      ├── BaseRecalibrator/
 │      └── ApplyBQSR/
+├── Snakefile                # Workflow file
 └── README.md                # Documentation
 ```
 

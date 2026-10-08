@@ -2,7 +2,7 @@
 This course follows the practicals for the Cancer Genomics course for the Bioinformatics Masters at the unibe.   
 
 ## Group members
-Group #6
+Group #6  
 Andy Mucyo Nkunzimana: 19-325-760   
 Andri Levi Widmer: 20-105-581  
 Rohit Mohan Bharatia: 25-114-455   

@@ -44,6 +44,6 @@ Initial QC:
 
 Read Alignment: bwa-mem2: - https://github.com/bwa-mem2/bwa-mem2  
 BAM Processing: MarkDuplicates: - https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard  
-Quality Calibration
+Quality Calibration:
 - BaseRecalibrator: - https://gatk.broadinstitute.org/hc/en-us/articles/360036898312-BaseRecalibrator  
 - ApplyBQSR: - https://gatk.broadinstitute.org/hc/en-us/articles/360037055712-ApplyBQSR  

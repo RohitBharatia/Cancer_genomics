@@ -13,7 +13,8 @@ Rohit Mohan Bharatia: 25-114-455
 Scripts are numbered in the order of the practicals
 
 #### Data
-Data obtained from the original repository provided by the professors.
+Data obtained from <add directory here> repository on the UNIBE cluster and symlinked to data in the project directory.
+
 
 ### Tools:
 Analysis was done on the University of Bern's HPC cluster. 

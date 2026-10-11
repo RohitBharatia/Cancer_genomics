@@ -1,2 +1,4 @@
-# data dir
 data/
+results/
+logs/
+.snakemake/

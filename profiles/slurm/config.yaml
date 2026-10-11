@@ -1,0 +1,8 @@
+executor: slurm
+jobs: 20
+software-deployment-method: conda
+printshellcmds: true
+default-resources:
+  slurm_partition: pshort_el8
+  mem_mb: 4000
+  runtime: 60

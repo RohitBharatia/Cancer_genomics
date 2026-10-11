@@ -1,0 +1,4 @@
+samples:
+  - normal
+  - tumor
+data_dir: data

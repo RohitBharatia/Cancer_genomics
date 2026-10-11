@@ -1,5 +1,7 @@
-name: snakemake-env
+name: snakemake
 channels:
-  - defaults
+  - conda-forge
+  - bioconda
 dependencies:
   - snakemake
+  - snakemake-executor-plugin-slurm

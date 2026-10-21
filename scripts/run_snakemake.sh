@@ -7,10 +7,10 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=pibu_el8
 #SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=andri.widmer@unifr.ch
+##SBATCH --mail-user=rohit.bharatia@students.unibe.ch     
 
-source $HOME/miniforge3/bin/activate
+source /data/users/rbharatia/envs/miniforge3/bin/activate
 conda activate snakemake
-
-cd /data/users/awidmer/Cancer_genomics
+ 
+cd /data/users/rbharatia/cancer_genomics
 snakemake --profile profiles/slurm

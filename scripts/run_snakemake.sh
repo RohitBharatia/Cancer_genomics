@@ -10,7 +10,7 @@
 ##SBATCH --mail-user=rohit.bharatia@students.unibe.ch     
 
 source /data/users/rbharatia/envs/miniforge3/bin/activate
-conda activate snakemake
+conda activate /data/users/rbharatia/envs/snakemake-env
  
 cd /data/users/rbharatia/cancer_genomics
 snakemake --profile profiles/slurm

@@ -9,8 +9,15 @@
 #SBATCH --mail-type=END,FAIL
 ##SBATCH --mail-user=rohit.bharatia@students.unibe.ch     
 
-source /data/users/rbharatia/envs/miniforge3/bin/activate
-conda activate /data/users/rbharatia/envs/snakemake-env
- 
-cd /data/users/rbharatia/cancer_genomics
+WORKING_DIR='/data/users/ankunzimana/Cancer_genomics'
+ENV_NAME="snakemake-env"
+
+if conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
+    conda activate snakemake-env
+else
+    conda env create -f "$WORKING_DIR/envs/snakemake-env.yaml" &&\
+        conda activate snakemake-env
+fi
+
+cd $WORKING_DIR
 snakemake --profile profiles/slurm

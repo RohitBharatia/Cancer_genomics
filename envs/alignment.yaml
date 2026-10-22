@@ -1,0 +1,8 @@
+name: alignment
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bwa-mem2=2.2.1     # same version as the singularity image in the hint script
+  - samtools>=1.19
+  # htslib is pulled in by samtools; no extra packages needed

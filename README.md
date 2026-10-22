@@ -44,8 +44,10 @@ Cancer_genomics/
 | `fastqc` | `rules/qc.smk` | Quality control of raw tumor and normal reads | FastQC 0.12.1 |
 | `fastp` | `rules/qc.smk` | Adapter and quality trimming | fastp 0.24.1 |
 | `multiqc` | `rules/qc.smk` | Aggregated QC report of FastQC and fastp | MultiQC 1.33 |
+| `read_alignment` | `rules/readalign_bam.smk` | Read alignment | bwa-mem2=2.2.1 |
+| `sam_bam_conversion` | `rules/readalign_bam.smk` | Converts sam to bam | samtools>=1.19 |
 
-Tool versions are defined in `envs/*.yaml`. Snakemake builds the environments automatically on the first run.
+Tool versions are defined in `envs/.yaml`. Snakemake builds the environments automatically on the first run.
 
 ### Data
 Raw reads were obtained from `<add directory here>` on the UNIBE cluster and placed in `data/`. The workflow expects:
@@ -92,7 +94,7 @@ rm Miniforge3-Linux-x86_64.sh
 
 ### 2. Create the Snakemake environment (only once)
 ```bash
-source $HOME/miniforge3/bin/activate
+source $HOME/miniforge3/bin/activate #adjust path to point at conda installation
 cd /path/to/Cancer_genomics    # adjust path
 conda env create -f envs/snakemake-env.yml
 ```
@@ -128,3 +130,7 @@ in the current session. Be aware that a loss of connection will kill the running
 mkdir -p logs
 snakemake --profile profiles/slurm
 ```
+
+## Environments
+All environments are tracked in the global envs/snakemake-env.yaml.
+Any other environment .yaml files are deprecated and not in use. 

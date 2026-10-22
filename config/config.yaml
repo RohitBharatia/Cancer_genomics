@@ -1,11 +1,6 @@
-# Project config (read in the Snakefile via `configfile: "config/config.yml"`).
-# Paths are relative to the project root, i.e. where you run snakemake.
-
 samples:
   - normal
   - tumor
-
-# Folder that contains the raw reads (normal.R1.fq.gz, ...) AND bwa_idx/.
 
 data_dir:"data/var_calling"
 QC="results/quality_control"

@@ -9,12 +9,17 @@
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=rohit.bharatia@students.unibe.ch     
 
-WORKING_DIR='~/data/Cancer_genomics' 
+WORKING_DIR='/data/users/ankunzimana/Cancer_genomics' 
 ENV_NAME="snakemake-env"
+CONDA=`conda info --base`
+
+source "$CONDA/etc/profile.d/conda.sh"
+
 if conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
     conda activate snakemake-env
 else
     conda env create -f "$WORKING_DIR/envs/snakemake-env.yaml" &&\
+        conda init &&\
         conda activate snakemake-env
 fi
 

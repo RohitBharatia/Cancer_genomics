@@ -7,11 +7,10 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=pibu_el8
 #SBATCH --mail-type=END,FAIL
-##SBATCH --mail-user=rohit.bharatia@students.unibe.ch     
+#SBATCH --mail-user=rohit.bharatia@students.unibe.ch     
 
-WORKING_DIR='/data/users/ankunzimana/Cancer_genomics'
+WORKING_DIR='~/data/Cancer_genomics' 
 ENV_NAME="snakemake-env"
-
 if conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
     conda activate snakemake-env
 else
@@ -20,4 +19,4 @@ else
 fi
 
 cd $WORKING_DIR
-snakemake --profile profiles/slurm
+snakemake --profile profiles/slurm --dry-run

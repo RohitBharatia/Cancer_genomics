@@ -7,8 +7,8 @@ samples:
 
 # Folder that contains the raw reads (normal.R1.fq.gz, ...) AND bwa_idx/.
 
-data_dir: "data/var_calling"
-QC = "results/quality_control"
-TRIMMED = f"{QC}/fastp"               # fastp output (used by alignment)
-ALIGN = "results/alignments"
-BWA_IDX = f"{DATA}/bwa_idx/genome.fa"   # bwa-mem2 index prefix
+data_dir:"data/var_calling"
+QC="results/quality_control"
+TRIMMED =f"{QC}/fastp"               # fastp output (used by alignment)
+ALIGN="results/alignments"
+BWA_IDX=f"{DATA}/bwa_idx/genome.fa"   # bwa-mem2 index prefix

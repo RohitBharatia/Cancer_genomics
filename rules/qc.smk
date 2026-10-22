@@ -12,7 +12,7 @@ rule fastqc:
         mem_mb = 4000,
         runtime = 60
     conda:
-        "../envs/fastqc.yaml"
+        "../envs/snakemake-env.yaml"
     shell:
         "fastqc -t {threads} -o {QC}/fastqc {input.r1} {input.r2} &> {log}"
 
@@ -33,7 +33,7 @@ rule fastp:
         mem_mb = 4000,
         runtime = 120
     conda:
-        "../envs/fastp.yaml"
+        "../envs/snakemake-env.yaml"
     shell:
         "fastp -i {input.r1} -I {input.r2} "
         "-o {output.r1} -O {output.r2} "
@@ -54,6 +54,6 @@ rule multiqc:
         mem_mb = 4000,
         runtime = 30
     conda:
-        "../envs/multiqc.yaml"
+        "../envs/snakemake-env.yaml"
     shell:
         "multiqc {QC}/fastqc {QC}/fastp -o {QC}/multiqc --force &> {log}"

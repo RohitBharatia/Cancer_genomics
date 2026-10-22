@@ -1,11 +1,12 @@
-configfile: "config/config.yml"
+configfile: "config/config.yaml"
 
 SAMPLES = config["samples"]
 DATA = config["data_dir"]
-QC = "results/quality_control"
-TRIMMED = f"{QC}/fastp"               # fastp output (used by alignment)
-ALIGN = "results/alignments"
-BWA_IDX = f"{DATA}/bwa_idx/genome.fa"   # bwa-mem2 index prefix
+QC = config["QC"]
+TRIMMED = config["TRIMMED"]
+ALIGN = config["ALIGN"]
+BWA_IDX = config["BWA_IDX"]
+
 
 include: "rules/qc.smk"
 include: "rules/readalign_bam.smk"

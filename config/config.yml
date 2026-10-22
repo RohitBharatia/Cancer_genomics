@@ -1,4 +1,10 @@
+# Project config (read in the Snakefile via `configfile: "config/config.yml"`).
+# Paths are relative to the project root, i.e. where you run snakemake.
+
 samples:
   - normal
   - tumor
-data_dir: data
+
+# Folder that contains the raw reads (normal.R1.fq.gz, ...) AND bwa_idx/.
+# TODO: confirm the path - `ls data/` should show the var_calling folder.
+data_dir: "data/var_calling"

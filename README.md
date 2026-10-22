@@ -3,9 +3,9 @@ This repository contains the practicals for the Cancer Genomics course of the Ma
 
 ## Group members
 Group #6
-- Andy Mucyo Nkunzimana
-- Andri Levi Widmer
-- Rohit Mohan Bharatia
+- Andy Mucyo Nkunzimana 19-325-760
+- Andri Levi Widmer 20-105-581
+- Rohit Mohan Bharatia 25-114-455
 
 ## Organisational matters
 
@@ -14,7 +14,7 @@ Group #6
 Cancer_genomics/
 ├── Snakefile                    # Main workflow file
 ├── config/
-│   └── config.yml               # Samples and paths
+│   └── config.yaml               # Samples and paths
 ├── rules/                       # Snakemake rules, one file per pipeline step
 │   └── qc.smk
 ├── envs/                        # Conda environment files
@@ -29,6 +29,7 @@ Cancer_genomics/
 │   │   ├── fastp/
 │   │   └── multiqc/
 │   ├── reads_alignment/
+│   │   └── stats/
 │   ├── BAM_processing/
 │   └── quality_calibration/
 │       ├── BaseRecalibrator/

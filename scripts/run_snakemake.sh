@@ -7,10 +7,16 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=pibu_el8
 #SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=andri.widmer@unifr.ch
+#SBATCH --mail-user=rohit.bharatia@students.unibe.ch     
 
-source $HOME/miniforge3/bin/activate
-conda activate snakemake
+WORKING_DIR='~/data/Cancer_genomics' 
+ENV_NAME="snakemake-env"
+if conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
+    conda activate snakemake-env
+else
+    conda env create -f "$WORKING_DIR/envs/snakemake-env.yaml" &&\
+        conda activate snakemake-env
+fi
 
-cd /data/users/awidmer/Cancer_genomics
-snakemake --profile profiles/slurm
+cd $WORKING_DIR
+snakemake --profile profiles/slurm --dry-run

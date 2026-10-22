@@ -1,11 +1,19 @@
-configfile: "config/config.yml"
+configfile: "config/config.yaml"
 
 SAMPLES = config["samples"]
 DATA = config["data_dir"]
-QC = "results/quality_control"
+QC = config["QC"]
+TRIMMED = config["TRIMMED"]
+ALIGN = config["ALIGN"]
+BWA_IDX = config["BWA_IDX"]
+
 
 include: "rules/qc.smk"
+include: "rules/readalign_bam.smk"
 
 rule all:
     input:
-        f"{QC}/multiqc/multiqc_report.html"
+       # f"{QC}/multiqc/multiqc_report.html", #replace
+        expand(f"{ALIGN}/{{sample}}.sorted.bam", sample=SAMPLES),
+        expand(f"{ALIGN}/{{sample}}.sorted.bam.bai", sample=SAMPLES),
+        expand(f"{ALIGN}/stats/{{sample}}.flagstat.txt", sample=SAMPLES),

@@ -3,6 +3,14 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
+  - conda[version='>=24.7.1']
   - snakemake-executor-plugin-slurm
   - snakemake
-  - conda[version='>=24.7.1']
+  - fastp=0.24.1
+  - fastqc=0.12.1
+  - multiqc=1.33
+  - bwa-mem2=2.2.1     
+  - samtools>=1.19
+
+
+#htslib is pulled in by samtools; no extra packages needed

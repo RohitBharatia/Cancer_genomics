@@ -2,14 +2,14 @@
 #SBATCH --job-name=snakemake_main
 #SBATCH --output=logs/snakemake_main_%j.out
 #SBATCH --error=logs/snakemake_main_%j.err
-#SBATCH --time=06:00:00
+#SBATCH --time=07:00:00
 #SBATCH --mem=2G
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=pibu_el8
 #SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=rohit.bharatia@students.unibe.ch     
+#SBATCH --mail-user=andri.widmer@unifr.ch
 
-WORKING_DIR='/data/users/ankunzimana/Cancer_genomics' 
+WORKING_DIR='/data/users/awidmer/Cancer_genomics' 
 ENV_NAME="snakemake-env"
 CONDA=`conda info --base`
 
@@ -23,4 +23,4 @@ else
 fi
 
 cd $WORKING_DIR
-snakemake --profile profiles/slurm --dry-run
+snakemake --profile profiles/slurm 

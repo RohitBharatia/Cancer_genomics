@@ -2,8 +2,8 @@ samples:
   - normal
   - tumor
 
-data_dir:"data/var_calling"
-QC="results/quality_control"
-TRIMMED =f"{QC}/fastp"               # fastp output (used by alignment)
-ALIGN="results/alignments"
-BWA_IDX=f"{DATA}/bwa_idx/genome.fa"   # bwa-mem2 index prefix
+data_dir: "data/var_calling"
+QC: "results/quality_control"
+TRIMMED: f"{QC}/fastp"               # fastp output (used by alignment)
+ALIGN: "results/alignments"
+BWA_IDX: f"{DATA}/bwa_idx/genome.fa"   # bwa-mem2 index prefix

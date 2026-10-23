@@ -19,7 +19,6 @@ if conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
     conda activate snakemake-env
 else
     conda env create -f "$WORKING_DIR/envs/snakemake-env.yaml" &&\
-        conda init &&\
         conda activate snakemake-env
 fi
 

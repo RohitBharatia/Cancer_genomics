@@ -15,12 +15,19 @@ CONDA=`conda info --base`
 
 source "$CONDA/etc/profile.d/conda.sh"
 
+echo "verifying $ENV_NAME installation..."
 if conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
+    echo "$ENV_NAME already exists, activating env..."
     conda activate snakemake-env
+    echo "$ENV_NAME activated"
 else
+    echo "creating $ENV_NAME ..."
     conda env create -f "$WORKING_DIR/envs/snakemake-env.yaml" &&\
         conda activate snakemake-env
+    echo "$ENV_NAME created and activated"
 fi
 
 cd $WORKING_DIR
-snakemake --profile profiles/slurm --dry-run
+echo "Starting pipeline..."
+snakemake --profile profiles/slurm --dry-run --printshellcmds
+echo "analysis COMPLETED!"

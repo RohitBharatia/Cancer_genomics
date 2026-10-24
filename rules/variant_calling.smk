@@ -76,3 +76,33 @@ rule filter_mutect_calls:
         "--stats {input.stats} "
         "-O {output.vcf} "
         "&> {log}"
+
+
+rule pass_variants:
+    input:
+        vcf = f"{VARIANTS}/somatic.filtered.vcf.gz",
+        tbi = f"{VARIANTS}/somatic.filtered.vcf.gz.tbi"
+    output:
+        vcf = f"{VARIANTS}/somatic.filtered.PASS.vcf.gz",
+        tbi = f"{VARIANTS}/somatic.filtered.PASS.vcf.gz.tbi",
+        filter_summary = f"{VARIANTS}/filter_summary.txt"
+    log:
+        "logs/bcftools/pass_variants.log"
+    threads: 1
+    resources:
+        mem_mb = 2000,
+        runtime = 30
+    conda:
+        "../envs/snakemake-env.yaml"
+    shell:
+        r"""
+        mkdir -p logs/bcftools
+
+        {{
+            bcftools view -f PASS {input.vcf:q} -Oz -o {output.vcf:q}
+            bcftools index --tbi {output.vcf:q}
+
+            # how many calls per FILTER value (PASS vs. reasons for removal)
+            bcftools view -H {input.vcf:q} | cut -f 7 | sort | uniq -c | sort -nr > {output.filter_summary:q}
+        }} > {log:q} 2>&1
+        """

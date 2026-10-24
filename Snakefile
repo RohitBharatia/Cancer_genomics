@@ -19,6 +19,7 @@ include: "rules/quality_calibration.smk"
 rule all:
     default_target: True
     input:
+<<<<<<< HEAD
         expand(
             f"{ALIGN}/{{sample}}.sorted.bam", sample=SAMPLES
         ),
@@ -38,3 +39,10 @@ rule all:
         ),
         f"{VARIANTS}/somatic.filtered.vcf.gz",
         f"{CALIBRATION}/multiqc/multiqc_report.html"
+=======
+       # f"{QC}/multiqc/multiqc_report.html", #replace
+        expand(f"{ALIGN}/{{sample}}.sorted.bam", sample=SAMPLES),
+        expand(f"{ALIGN}/{{sample}}.sorted.bam.bai", sample=SAMPLES),
+        expand(f"{ALIGN}/stats/{{sample}}.flagstat.txt", sample=SAMPLES),
+        f"{config['VARIANTS']}/filter_summary.txt",
+>>>>>>> 35a55f4 (PASS extraction)

@@ -29,10 +29,6 @@ rule MarkDuplicate:
                 -I {input.bam:q} \
                 -O {output.bam:q} \
                 -M {output.metrics:q} \
-                --REMOVE_DUPLICATES false \
-                --CREATE_INDEX false \
-                --MAX_FILE_HANDLES_FOR_READ_ENDS_MAP "$fd_handles" \
-                --TMP_DIR "$tmp"
 
             samtools quickcheck -v {output.bam:q}
         }} > {log:q} 2>&1

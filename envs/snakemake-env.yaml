@@ -11,6 +11,4 @@ dependencies:
   - multiqc=1.33
   - bwa-mem2=2.2.1     
   - samtools>=1.19
-  - gatk=3.8
-
-#htslib is pulled in by samtools; no extra packages needed
+  - gatk4=4.6.1.0

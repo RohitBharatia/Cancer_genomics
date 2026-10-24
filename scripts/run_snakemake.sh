@@ -19,7 +19,7 @@ source "$CONDA/bin/activate"
 echo "verifying $ENV_NAME installation..."
 if conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
     echo "$ENV_NAME already exists, updating and activating env..."
-    # conda env update -n snakemake-env -f $ENV_FILE_PATH -q
+    conda env update -n snakemake-env -f $ENV_FILE_PATH -q
     conda activate snakemake-env
     echo "$ENV_NAME activated!"
 else

@@ -3,7 +3,7 @@
 #SBATCH --output=logs/snakemake_main_%j.out
 #SBATCH --error=logs/snakemake_main_%j.err
 #SBATCH --time=06:00:00
-#SBATCH --mem=2G
+#SBATCH --mem=4G
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=pibu_el8
 #SBATCH --mail-type=BEGIN,END,FAIL

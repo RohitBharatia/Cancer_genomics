@@ -6,7 +6,7 @@
 #SBATCH --mem=2G
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=pibu_el8
-#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=andy.nkunzimana@students.unibe.ch     
 
 WORKING_DIR='/data/users/ankunzimana/Cancer_genomics' 
@@ -31,5 +31,5 @@ fi
 
 cd $WORKING_DIR
 echo "Starting pipeline..."
-snakemake --profile profiles/slurm --dry-run --printshellcmds
+snakemake --profile profiles/slurm
 echo "analysis COMPLETED!"

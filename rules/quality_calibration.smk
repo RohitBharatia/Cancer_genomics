@@ -7,6 +7,7 @@ rule MarkDuplicate:
         bam = f"{ALIGN}/{{sample}}.sorted.bam"
     output:
         bam = f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam",
+        bai = f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam.bai",
         metrics = f"{CALIBRATION}/MarkDuplicates/{{sample}}_metrics.txt"
     params:
         outdir = f"{CALIBRATION}/MarkDuplicates"
@@ -14,8 +15,8 @@ rule MarkDuplicate:
         "logs/gatk/{sample}gatk_MarkDuplicate.log"
     threads: 1
     resources:
-        mem_mb = 8000,
-        runtime = 120
+        mem_mb = 16000,
+        runtime = 240
     conda:
         "../envs/snakemake-env.yaml"
     shell:
@@ -29,40 +30,25 @@ rule MarkDuplicate:
                 -I {input.bam:q} \
                 -O {output.bam:q} \
                 -M {output.metrics:q} \
+                --REMOVE_DUPLICATES false \
+                --CREATE_INDEX false
 
             samtools quickcheck -v {output.bam:q}
+            samtools index {output.bam:q} {output.bai:q}
         }} > {log:q} 2>&1
-        """
-
-
-rule index_marked_bam:
-    input:
-        bam=f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam"
-    output:
-        bai=f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam.bai"
-    log:
-        "logs/gatk/{sample}.index_marked.log"
-    threads: 1
-    resources:
-        mem_mb=2000,
-        runtime=30
-    conda:
-        "../envs/snakemake-env.yaml"
-    shell:
-        r"""
-        mkdir -p logs/gatk
-        samtools index {input.bam:q} {output.bai:q} > {log:q} 2>&1
         """
 
 
 rule CollectMultipleMetrics:
     input:
         bam=f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam",
+        bai=f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam.bai",
         ref=REF
     output:
-        metrics_dir=f"{CALIBRATION}/CollectMultipleMetrics/{{sample}}"
+        summary = f"{CALIBRATION}/CollectMultipleMetrics/{{sample}}/{{sample}}.alignment_summary_metrics"
     params:
-        prefix=f"{CALIBRATION}/CollectMultipleMetrics/{{sample}}"
+        outdir = f"{CALIBRATION}/CollectMultipleMetrics/{{sample}}",
+        prefix = f"{CALIBRATION}/CollectMultipleMetrics/{{sample}}/{{sample}}"
     log:
         "logs/gatk/{sample}.CollectMultipleMetrics.log"
     threads: 1
@@ -73,13 +59,15 @@ rule CollectMultipleMetrics:
         "../envs/snakemake-env.yaml"
     shell:
         r"""
-        mkdir -p {output.metrics_dir:q} logs/gatk
+        mkdir -p {params.outdir:q} logs/gatk
 
         {{
             gatk CollectMultipleMetrics \
                 -I {input.bam:q} \
-                -O {params.prefix:q} \
+                -O {params.prefix} \
                 -R {input.ref:q} \
+                --PROGRAM null \
+                --PROGRAM CollectAlignmentSummaryMetrics
         }} > {log:q} 2>&1
         """
 
@@ -87,6 +75,7 @@ rule CollectMultipleMetrics:
 rule BQSR:
     input:
         bam = f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam",
+        bai = f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam.bai",
         ref = REF,
         sites = KNOWN_SITES,
         indels = KNOWN_INDELS
@@ -96,6 +85,7 @@ rule BQSR:
         "logs/gatk/{sample}gatk_recalibration.log"
     params: 
         outdir = f"{CALIBRATION}/BQSR",
+        intervals = "-L chr6 -L chr17"
     threads: 1
     resources:
         mem_mb = 6000,
@@ -109,6 +99,7 @@ rule BQSR:
         gatk BaseRecalibrator \
             -R {input.ref:q} \
             -I {input.bam:q} \
+            {params.intervals} \
             --known-sites {input.sites:q} \
             --known-sites {input.indels:q} \
             -O {output.table:q} \
@@ -120,10 +111,12 @@ rule BQSR:
 rule Apply_BQSR:
     input:
         bam = f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam",
+        bai = f"{CALIBRATION}/MarkDuplicates/{{sample}}_marked.bam.bai",
         table = f"{CALIBRATION}/BQSR/{{sample}}_recal.table",
         ref = REF
     output:
-        bam = f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam"
+        bam = f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam",
+        bai = f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam.bai"
     log:
         "logs/gatk/{sample}gatk_bqsr.log"
     params:
@@ -147,27 +140,8 @@ rule Apply_BQSR:
                 -O {output.bam:q}
 
             samtools quickcheck -v {output.bam:q}
+            samtools index {output.bam:q} {output.bai:q}
         }} > {log:q} 2>&1
-        """
-
-
-rule index_bqsr_bam:
-    input:
-        bam=f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam"
-    output:
-        bai=f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam.bai"
-    log:
-        "logs/gatk/{sample}.index_bqsr.log"
-    threads: 1
-    resources:
-        mem_mb=2000,
-        runtime=30
-    conda:
-        "../envs/snakemake-env.yaml"
-    shell:
-        r"""
-        mkdir -p logs/gatk
-        samtools index {input.bam:q} {output.bai:q} > {log:q} 2>&1
         """
 
 
@@ -187,7 +161,7 @@ rule multiqc_calibration:
             sample=SAMPLES
         ),
         metrics=expand(
-            f"{CALIBRATION}/CollectMultipleMetrics/{{sample}}",
+            f"{CALIBRATION}/CollectMultipleMetrics/{{sample}}/{{sample}}.alignment_summary_metrics",
             sample=SAMPLES
         )
     output:

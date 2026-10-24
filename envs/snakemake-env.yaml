@@ -12,3 +12,6 @@ dependencies:
   - bwa-mem2=2.2.1     
   - samtools>=1.19
   - gatk4=4.6.1.0
+  - r-base=4.4
+  - r-ggplot2
+  - openjdk=17

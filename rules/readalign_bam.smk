@@ -10,11 +10,11 @@ rule bwa_mem2_align:
         r1 = f"{TRIMMED}/{{sample}}_R1.trimmed.fq.gz",
         r2 = f"{TRIMMED}/{{sample}}_R2.trimmed.fq.gz",
         # fail early (at DAG build) if the index is missing
-        idx = multiext(BWA_IDX, ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
+        idx = multiext(REF, ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
     output:
         bam = temp(f"{ALIGN}/{{sample}}.aligned.bam")    # deleted once sorting succeeded
     params:
-        ref = BWA_IDX,
+        ref = REF,
         # Read group: required by GATK (MarkDuplicates, BQSR, Mutect2 ...).
         # r"" keeps \t literal so bwa-mem2 itself expands it (as in the hint script).
         rg = r"@RG\tID:{sample}\tSM:{sample}\tPL:ILLUMINA\tLB:{sample}",

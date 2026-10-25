@@ -46,6 +46,11 @@ Cancer_genomics/
 | `multiqc` | `rules/qc.smk` | Aggregated QC report of FastQC and fastp | MultiQC 1.33 |
 | `read_alignment` | `rules/readalign_bam.smk` | Read alignment | bwa-mem2=2.2.1 |
 | `sam_bam_conversion` | `rules/readalign_bam.smk` | Converts sam to bam | samtools>=1.19 |
+|`bam_header`|`rules/bam_qc.smk`|Dump BAM header (sort order, contigs, @PG)|samtools>=1.19|
+|`flagstat_bqsr`|`rules/bam_qc.smk`|Alignment summary on the recalibrated BAM|samtools>=1.19|
+|`collect_hs_metrics`|`rules/bam_qc.smk`|Exome capture metrics (fold enrichment, on-target, coverage)|GATK 4.6.1.0|
+|`multiqc_bam`|`rules/bam_qc.smk`|Final aggregated report (QC, duplicates, flagstat, HsMetrics)|MultiQC 1.33|
+
 
 Tool versions are defined in `envs/.yaml`. Snakemake builds the environments automatically on the first run.
 

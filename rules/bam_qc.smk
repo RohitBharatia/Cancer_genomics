@@ -47,13 +47,37 @@ rule flagstat_bqsr:
         "samtools flagstat -@ {threads} {input.bam} > {output} 2> {log}"
 
 
+rule bam_qc_intervals:
+    """Re-header exome interval_list with the BAM's own @SQ dictionary (195 contigs)."""
+    input:
+        bam = f"{CALIBRATION}/BQSR/tumor_bqsr.bam",
+        intervals = BAMQC_INTERVALS
+    output:
+        f"{BAMQC}/intervals/exome_regions.bam_dict.interval_list"
+    log:
+        "logs/bam_qc/intervals.log"
+    threads: 1
+    resources:
+        mem_mb = 1000,
+        runtime = 10
+    conda:
+        "../envs/snakemake-env.yaml"
+    shell:
+        r"""
+        mkdir -p $(dirname {output:q}) logs/bam_qc
+        {{
+            samtools view -H {input.bam:q} | grep '^@SQ'
+            grep -v '^@' {input.intervals:q}
+        }} > {output:q} 2> {log:q}
+        """
+
 rule collect_hs_metrics:
-    """Hybrid-selection (exome capture) metrics. Bait = target = exome intervals, as in the slides."""
+    """Hybrid-selection (exome capture) metrics."""
     input:
         bam = f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam",
         bai = f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam.bai",
         ref = REF,
-        intervals = BAMQC_INTERVALS
+        intervals = f"{BAMQC}/intervals/exome_regions.bam_dict.interval_list"
     output:
         f"{BAMQC}/hs_metrics/{{sample}}.bqsr.hs_metrics.txt"
     params:

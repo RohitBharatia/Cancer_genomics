@@ -9,7 +9,7 @@ REF = config["reference"]
 KNOWN_SITES = config["known_sites"]
 KNOWN_INDELS = config["known_indels"]
 CALIBRATION = config["calibration"]
-
+VARIANTS = config["VARIANTS"]
 
 include: "rules/qc.smk"
 include: "rules/readalign_bam.smk"
@@ -36,5 +36,5 @@ rule all:
             f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam.bai",
             sample=SAMPLES
         ),
-        f"{config['VARIANTS']}/somatic.filtered.vcf.gz",
+        f"{VARIANTS}/somatic.filtered.vcf.gz",
         f"{CALIBRATION}/multiqc/multiqc_report.html"

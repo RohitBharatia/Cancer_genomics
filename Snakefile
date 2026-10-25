@@ -9,16 +9,16 @@ REF = config["reference"]
 KNOWN_SITES = config["known_sites"]
 KNOWN_INDELS = config["known_indels"]
 CALIBRATION = config["calibration"]
-
+VARIANTS = config["VARIANTS"]
 
 include: "rules/qc.smk"
 include: "rules/readalign_bam.smk"
+include: "rules/variant_calling.smk"
 include: "rules/quality_calibration.smk"
 
 rule all:
     default_target: True
     input:
-       # f"{QC}/multiqc/multiqc_report.html", #replace
         expand(
             f"{ALIGN}/{{sample}}.sorted.bam", sample=SAMPLES
         ),
@@ -36,4 +36,5 @@ rule all:
             f"{CALIBRATION}/BQSR/{{sample}}_bqsr.bam.bai",
             sample=SAMPLES
         ),
+        f"{VARIANTS}/somatic.filtered.vcf.gz",
         f"{CALIBRATION}/multiqc/multiqc_report.html"

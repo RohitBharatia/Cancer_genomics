@@ -10,11 +10,15 @@ KNOWN_SITES = config["known_sites"]
 KNOWN_INDELS = config["known_indels"]
 CALIBRATION = config["calibration"]
 VARIANTS = config["VARIANTS"]
+BAMQC = config["bam_qc"]["outdir"]
+
 
 include: "rules/qc.smk"
 include: "rules/readalign_bam.smk"
-include: "rules/variant_calling.smk"
 include: "rules/quality_calibration.smk"
+include: "rules/bam_qc.smk"
+include: "rules/variant_calling.smk"
+
 
 rule all:
     default_target: True
@@ -37,4 +41,5 @@ rule all:
             sample=SAMPLES
         ),
         f"{VARIANTS}/somatic.filtered.vcf.gz",
-        f"{CALIBRATION}/multiqc/multiqc_report.html"
+        f"{CALIBRATION}/multiqc/multiqc_report.html",
+        f"{BAMQC}/multiqc/multiqc_report.html"

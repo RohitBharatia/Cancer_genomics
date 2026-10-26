@@ -11,6 +11,7 @@ reference: "data/VAR_CALLING/bwa_idx/genome.fa"   # bwa-mem2 index prefix
 known_sites: "data/VAR_CALLING/dbsnp/GCF_000001405.40_alias.vcf.gz"
 known_indels: "data/VAR_CALLING/known_indels/resources_broad_hg38_v0_Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
 
+
 # Variant calling
 VARIANTS: "results/variants"
 
@@ -24,3 +25,9 @@ var_calling:
   intervals:   "data/var_calling/reference/exome_regions.bed.interval_list"
   germline:    "data/var_calling/resources/af-only-gnomad.hg38.subset.vcf.gz"
   pon:         "data/var_calling/resources/1000g_pon.hg38.subset.vcf.gz"
+
+  
+# BAM quality control (last step)
+bam_qc:
+  outdir: "results/bam_qc"
+  intervals: "data/VAR_CALLING/reference/exome_regions.bed.interval_list"

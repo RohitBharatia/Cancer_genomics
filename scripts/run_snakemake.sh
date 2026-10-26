@@ -7,9 +7,9 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=pibu_el8
 #SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=andri.widmer@unifr.ch
+#SBATCH --mail-user=andy.nkunzimana@unifr.ch
 
-WORKING_DIR='/data/users/awidmer/Cancer_genomics' 
+WORKING_DIR='/data/users/ankunzimana/Cancer_genomics' 
 ENV_NAME="snakemake-env"
 ENV_FILE_PATH="$WORKING_DIR/envs/snakemake-env.yaml"
 CONDA=`conda info --base`

@@ -9,18 +9,16 @@ dependencies:
   - fastp=0.24.1
   - fastqc=0.12.1
   - multiqc=1.33
-  - bwa-mem2=2.2.1     
+  - bwa-mem2=2.2.1 
   - samtools>=1.19
-<<<<<<< HEAD
   - gatk4=4.6.1.0
   - r-base=4.4
   - r-ggplot2
   - openjdk=17
-=======
   - gatk4=4.5.0.0
   - bcftools>=1.19
 
 
+#htslib is pulled in by samtools; no extra packages needed
 
 #htslib is pulled in by samtools; no extra packages needed
->>>>>>> 35a55f4 (PASS extraction)

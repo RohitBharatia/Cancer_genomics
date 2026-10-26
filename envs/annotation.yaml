@@ -1,0 +1,6 @@
+name: annotation
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - ensembl-vep=116  

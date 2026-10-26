@@ -6,7 +6,7 @@
 #SBATCH --mem=4G
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=pibu_el8
-#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=andri.widmer@unifr.ch
 
 WORKING_DIR='/data/users/awidmer/Cancer_genomics' 

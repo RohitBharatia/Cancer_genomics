@@ -1,6 +1,6 @@
 # Somatic Variant Calling
 
-VC = config["var_calling"]
+VC = config["VAR_CALLING"]
 VARIANTS = config["VARIANTS"]
 
 

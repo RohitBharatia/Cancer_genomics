@@ -10,11 +10,6 @@ KNOWN_SITES = config["known_sites"]
 KNOWN_INDELS = config["known_indels"]
 CALIBRATION = config["calibration"]
 VARIANTS = config["VARIANTS"]
-QC = config["QC"]
-TRIMMED = config["TRIMMED"]
-ALIGN = config["ALIGN"]
-BWA_IDX = config["BWA_IDX"]
-VARIANTS = config["VARIANTS"]
 ANNOTATION = config["annotation"]
 CLINVAR = config["clinvar"]
 VEP_CACHE = config["vep_cache"]
@@ -47,7 +42,7 @@ rule all:
             sample=SAMPLES
         ),
         f"{VARIANTS}/somatic.filtered.vcf.gz",
-        f"{CALIBRATION}/multiqc/multiqc_report.html"
+        f"{CALIBRATION}/multiqc/multiqc_report.html",
        # f"{QC}/multiqc/multiqc_report.html", #replace
         expand(f"{ALIGN}/{{sample}}.sorted.bam", sample=SAMPLES),
         expand(f"{ALIGN}/{{sample}}.sorted.bam.bai", sample=SAMPLES),

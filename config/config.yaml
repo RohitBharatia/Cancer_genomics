@@ -15,7 +15,7 @@ known_indels: "data/var_calling/known_indels/resources_broad_hg38_v0_Mills_and_1
 # Variant calling
 VARIANTS: "results/variants"
 
-var_calling:
+VAR_CALLING:
   tumor_bam:   "data/var_calling/alignments/tumor.recal.bam"
   tumor_bai:   "data/var_calling/alignments/tumor.recal.bai"
   normal_bam:  "data/var_calling/alignments/normal.recal.bam"
@@ -26,8 +26,8 @@ var_calling:
   germline:    "data/var_calling/resources/af-only-gnomad.hg38.subset.vcf.gz"
   pon:         "data/var_calling/resources/1000g_pon.hg38.subset.vcf.gz"
 
-  
-# BAM quality control (last step)
-bam_qc:
-  outdir: "results/bam_qc"
-  intervals: "data/var_calling/reference/exome_regions.bed.interval_list"
+# annotation (VEP)
+annotation: "results/annotation"
+clinvar: "data/var_calling/resources/clinvar/clinvar.vcf.gz"
+vep_cache: "/data/courses/cancergenomics/2026/VEP/vep_data"
+vep_cache_version: 116

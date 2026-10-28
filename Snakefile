@@ -20,6 +20,7 @@ include: "rules/qc.smk"
 include: "rules/readalign_bam.smk"
 include: "rules/quality_calibration.smk"
 include: "rules/annotation.smk"
+include: "rules/prioritization.smk"
 
 rule all:
     default_target: True
@@ -51,9 +52,9 @@ rule all:
         f"{ANNOTATION}/chr6chr17_mutect2_annotated_with_clinVar_filtered.txt",
         f"{ANNOTATION}/summary.txt",
         f"{ANNOTATION}/plots/01_consequences.png",
-        f"{ANNOTATION}/plots/01_consequences.png",
         f"{ANNOTATION}/plots/02_consequences_by_chr.png",
         f"{ANNOTATION}/plots/03_consequences_by_impact.png",
         f"{ANNOTATION}/plots/04_consequences_by_impact_chr.png",
         f"{ANNOTATION}/plots/05_variant_classes.png",
-        f"{ANNOTATION}/plots/06_biotypes.png"
+        f"{ANNOTATION}/plots/06_biotypes.png",
+        expand(f"{PRIO}/{{sample}}_report.html", sample=REPORT_SAMPLES)

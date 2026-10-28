@@ -31,3 +31,8 @@ annotation: "results/annotation"
 clinvar: "data/var_calling/resources/clinvar/clinvar.vcf.gz"
 vep_cache: "/data/courses/cancergenomics/2026/VEP/vep_data"
 vep_cache_version: 116
+
+# part 5 second annotaion
+cancer_genes: "/data/courses/cancergenomics/2026/VEP/cancerGeneList.txt"
+ad2881_vcf: "/data/courses/cancergenomics/2026/VEP/input/Panagiotis_Chouvardas_2026/AD2881.PASS.vcf.gz"
+

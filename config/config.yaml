@@ -7,14 +7,15 @@ quality_control: "results/quality_control"
 trimmed: "results/quality_control/fastp"               # fastp output (used by alignment)
 calibration: "results/quality_calibration"
 align: "results/alignments"
-reference: "data/VAR_CALLING/bwa_idx/genome.fa"   # bwa-mem2 index prefix
-known_sites: "data/VAR_CALLING/dbsnp/GCF_000001405.40_alias.vcf.gz"
-known_indels: "data/VAR_CALLING/known_indels/resources_broad_hg38_v0_Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
+reference: "data/var_calling/bwa_idx/genome.fa"   # bwa-mem2 index prefix
+known_sites: "data/var_calling/dbsnp/GCF_000001405.40_alias.vcf.gz"
+known_indels: "data/var_calling/known_indels/resources_broad_hg38_v0_Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
+
 
 # Variant calling
 VARIANTS: "results/variants"
 
-var_calling:
+VAR_CALLING:
   tumor_bam:   "data/var_calling/alignments/tumor.recal.bam"
   tumor_bai:   "data/var_calling/alignments/tumor.recal.bai"
   normal_bam:  "data/var_calling/alignments/normal.recal.bam"

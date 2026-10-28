@@ -23,7 +23,6 @@ VEP_CACHE_VERSION = config["vep_cache_version"]
 
 include: "rules/qc.smk"
 include: "rules/readalign_bam.smk"
-include: "rules/variant_calling.smk"
 include: "rules/quality_calibration.smk"
 include: "rules/annotation.smk"
 

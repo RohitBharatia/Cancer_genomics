@@ -1,0 +1,174 @@
+---
+title: "Variant prioritization – `r params$sample`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+params:
+  sample: "HCC1395"
+  annotated: "results/vep/HCC1395_PASS_annotated.txt"
+  filtered: "results/vep/HCC1395_PASS_filtered.txt"
+  genes: "/data/courses/cancergenomics/2026/VEP/cancerGeneList.txt"
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width = 9, fig.height = 5)
+library(tidyverse)
+library(data.table)
+theme_set(theme_bw())
+
+# Read VEP output (tab or default format). Handles an "Extra" key=value column if present.
+read_vep <- function(path) {
+  lines <- readLines(path)
+  lines <- lines[!startsWith(lines, "##")]
+  lines[1] <- sub("^#", "", lines[1])
+  df <- fread(text = paste(lines, collapse = "\n"), sep = "\t", quote = "",
+              na.strings = "-", colClasses = "character")
+
+  if ("Extra" %in% names(df)) {
+    extra <- df[, .(row = .I, kv = Extra)][!is.na(kv)]
+    extra <- extra[, .(kv = unlist(strsplit(kv, ";", fixed = TRUE))), by = row]
+    extra[, `:=`(key = sub("=.*", "", kv), value = sub("^[^=]*=", "", kv))]
+    wide <- dcast(extra, row ~ key, value.var = "value")
+    df <- cbind(df[, !"Extra"], wide[match(seq_len(nrow(df)), wide$row), !"row"])
+  }
+
+  for (col in c("SIFT", "PolyPhen", "ClinVar_CLNSIG", "gnomADe_AF", "gnomADg_AF",
+                "VARIANT_CLASS", "SYMBOL", "BIOTYPE", "IMPACT", "Consequence")) {
+    if (!col %in% names(df)) df[[col]] <- NA_character_
+  }
+
+  as_tibble(df) %>%
+    mutate(
+      CHROM            = factor(sub("^chr", "", sub(":.*", "", Location)),
+                                levels = c(1:22, "X", "Y", "MT")),
+      Consequence_main = sub(",.*", "", Consequence),
+      SIFT_class       = sub("\\(.*", "", SIFT),
+      SIFT_score       = suppressWarnings(as.numeric(sub(".*\\((.*)\\)", "\\1", SIFT))),
+      PolyPhen_class   = sub("\\(.*", "", PolyPhen),
+      PolyPhen_score   = suppressWarnings(as.numeric(sub(".*\\((.*)\\)", "\\1", PolyPhen))),
+      gnomADe_AF       = suppressWarnings(as.numeric(gnomADe_AF)),
+      gnomADg_AF       = suppressWarnings(as.numeric(gnomADg_AF)),
+      IMPACT           = factor(IMPACT, levels = c("HIGH", "MODERATE", "LOW", "MODIFIER"))
+    )
+}
+
+all_v  <- read_vep(params$annotated)
+filt_v <- read_vep(params$filtered)
+```
+
+## Overview
+
+| | Variants |
+|---|---|
+| PASS variants (annotated) | `r format(n_distinct(all_v$Uploaded_variation), big.mark = "'")` |
+| After filtering | `r format(n_distinct(filt_v$Uploaded_variation), big.mark = "'")` |
+| Genes after filtering | `r n_distinct(na.omit(filt_v$SYMBOL))` |
+
+## All PASS variants
+
+### Variant classes
+
+```{r}
+all_v %>% count(VARIANT_CLASS) %>%
+  ggplot(aes(reorder(VARIANT_CLASS, -n), n)) + geom_col() +
+  labs(x = NULL, y = "Variants")
+```
+
+### Consequences
+
+```{r, fig.height = 6}
+all_v %>% separate_rows(Consequence, sep = ",") %>% count(Consequence) %>%
+  ggplot(aes(n, reorder(Consequence, n))) + geom_col() + scale_x_log10() +
+  labs(x = "Variants (log10)", y = NULL)
+```
+
+### Impact by variant class
+
+```{r}
+all_v %>% ggplot(aes(VARIANT_CLASS, fill = IMPACT)) + geom_bar(position = "fill") +
+  scale_fill_brewer(palette = "RdYlBu") + labs(x = NULL, y = "Fraction")
+```
+
+### Impact by chromosome
+
+```{r}
+all_v %>% filter(!is.na(CHROM)) %>%
+  ggplot(aes(CHROM, fill = IMPACT)) + geom_bar() +
+  scale_fill_brewer(palette = "RdYlBu") + labs(x = "Chromosome", y = "Variants")
+```
+
+### Impact vs population frequency (gnomAD genomes)
+
+```{r}
+all_v %>% filter(!is.na(gnomADg_AF), gnomADg_AF > 0) %>%
+  ggplot(aes(IMPACT, gnomADg_AF)) + geom_boxplot() + scale_y_log10() +
+  geom_hline(yintercept = 0.01, linetype = "dashed", colour = "red") +
+  labs(x = NULL, y = "gnomADg AF (log10)")
+```
+
+Variants without a gnomAD entry (not observed in the population): `r sum(is.na(all_v$gnomADg_AF))` of `r nrow(all_v)`.
+
+### ClinVar interpretations
+
+```{r}
+all_v %>% filter(!is.na(ClinVar_CLNSIG)) %>%
+  mutate(ClinVar_CLNSIG = fct_lump_n(ClinVar_CLNSIG, 10)) %>%
+  ggplot(aes(y = fct_infreq(ClinVar_CLNSIG), fill = IMPACT)) + geom_bar() +
+  scale_fill_brewer(palette = "RdYlBu") + labs(x = "Variants", y = NULL)
+```
+
+## Filtered variants
+
+```{r}
+filt_v %>% separate_rows(Consequence, sep = ",") %>% count(Consequence) %>%
+  ggplot(aes(n, reorder(Consequence, n))) + geom_col() + labs(x = "Variants", y = NULL)
+```
+
+```{r}
+filt_v %>% filter(!is.na(SIFT_score)) %>%
+  ggplot(aes(SIFT_score, fill = SIFT_class)) + geom_histogram(bins = 30) +
+  geom_vline(xintercept = 0.05, linetype = "dashed") + labs(x = "SIFT score", y = "Variants")
+```
+
+## Known cancer genes
+
+```{r}
+cg <- fread(params$genes)
+gene_col <- if ("Hugo Symbol" %in% names(cg)) "Hugo Symbol" else names(cg)[1]
+cancer_genes <- unique(cg[[gene_col]])
+
+filt_v <- filt_v %>% mutate(cancer_gene = SYMBOL %in% cancer_genes)
+
+hits <- filt_v %>% filter(cancer_gene) %>%
+  select(SYMBOL, Location, Consequence, IMPACT, Amino_acids, Protein_position,
+         SIFT, PolyPhen, ClinVar_CLNSIG, gnomADg_AF) %>%
+  arrange(IMPACT, SYMBOL)
+
+knitr::kable(hits)
+```
+
+`r nrow(hits)` filtered variants fall in `r n_distinct(hits$SYMBOL)` known cancer genes.
+
+## Ranking (helper for picking the top 3)
+
+Simple additive score: HIGH = 3, MODERATE = 2, ClinVar (likely) pathogenic +2, SIFT deleterious +1,
+PolyPhen probably damaging +1, known cancer gene +2. This is a starting point, not the answer —
+the top 3 still need biological reasoning (tumour type, known hotspot, tumour suppressor vs oncogene).
+
+```{r}
+ranked <- filt_v %>%
+  mutate(score =
+    3 * (IMPACT %in% "HIGH") + 2 * (IMPACT %in% "MODERATE") +
+    2 * coalesce(str_detect(ClinVar_CLNSIG, regex("(^|[/_&,])(likely_)?pathogenic", ignore_case = TRUE)) &
+                 !str_detect(ClinVar_CLNSIG, regex("conflicting", ignore_case = TRUE)), FALSE) +
+    1 * (SIFT_class %in% "deleterious") +
+    1 * (PolyPhen_class %in% "probably_damaging") +
+    2 * cancer_gene) %>%
+  arrange(desc(score)) %>%
+  select(score, SYMBOL, Consequence, IMPACT, Amino_acids, Protein_position,
+         SIFT, PolyPhen, ClinVar_CLNSIG, cancer_gene)
+
+knitr::kable(head(ranked, 15))
+```

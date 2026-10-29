@@ -175,7 +175,7 @@ rule multiqc_calibration:
         mem_mb=2000,
         runtime=30
     conda:
-        "../envs/multiqc.yaml"
+        "../envs/snakemake-env.yaml"
     shell:
         r"""
         mkdir -p {params.outdir:q} logs/multiqc

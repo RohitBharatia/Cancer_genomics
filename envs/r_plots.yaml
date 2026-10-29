@@ -1,4 +1,4 @@
-name: annotation
+name: r_plots
 channels:
   - conda-forge
   - bioconda

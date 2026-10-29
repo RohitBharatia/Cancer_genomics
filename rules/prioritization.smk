@@ -146,11 +146,12 @@ rule vep_report:
         "../envs/r_report.yaml"
     shell:
         r"""
-        Rscript -e "rmarkdown::render( \
+        Rscript -e "wd <- getwd(); rmarkdown::render( \
             input = '{input.rmd}', \
-            output_file = normalizePath('{output}', mustWork = FALSE), \
+            output_file = basename('{output}'), \
+            output_dir = file.path(wd, dirname('{output}')), \
             intermediates_dir = tempdir(), \
-            knit_root_dir = getwd(), \
+            knit_root_dir = wd, \
             params = list(sample = '{wildcards.sample}', \
                           annotated = '{input.annotated}', \
                           filtered = '{input.filtered}', \
